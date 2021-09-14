@@ -47,7 +47,7 @@ npx prisma migrate dev
 
 |URL|解説|
 |---|---|
-|http://localhost:3000|アプリケーション URL|
+|http://localhost:8080|アプリケーション URL|
 |postgresql://postgres:password@db:5432/mydb|PostgreSQL URL|
 
 > 💡 PostgreSQLのDBクライアントは、[TablePlus | Modern, Native Tool for Database Management](https://tableplus.com/)を使っています
@@ -73,7 +73,7 @@ APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postm
 curl -i \
   --header "Accept: application/json" \
   --request GET \
-  http://localhost:3000/user/
+  http://localhost:8080/user/
 ```
 
 ### POST `/user/`
@@ -82,7 +82,7 @@ curl -i \
 curl -i \
   --header "Accept: application/json" \
   --request POST --data "email":"example@gmail.com" \
-  http://localhost:3000/user/
+  http://localhost:8080/user/
 ```
 
 ### PATCH `/user/`
@@ -91,7 +91,7 @@ curl -i \
 curl -i \
   --header "Accept: application/json" \
   --request PATCH --data "email":"example@gmail.com" \
-  http://localhost:3000/user/
+  http://localhost:8080/user/
 ```
 
 ### DELETE `/user/`
@@ -100,5 +100,5 @@ curl -i \
 curl -i \
   --header "Accept: application/json" \
   --request DELETE \
-  http://localhost:3000/user/
+  http://localhost:8080/user/
 ```
