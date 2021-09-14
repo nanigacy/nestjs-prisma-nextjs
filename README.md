@@ -50,7 +50,7 @@ npx prisma migrate dev
 |http://localhost:8080|アプリケーション URL|
 |postgresql://postgres:password@db:5432/mydb|PostgreSQL URL|
 
-> 💡 PostgreSQLのDBクライアントは、[TablePlus | Modern, Native Tool for Database Management](https://tableplus.com/)を使っています
+> 💡 PostgreSQLのDBクライアントは、[TablePlus](https://tableplus.com/)を使っています
 
 ## デプロイ ⛴
 
