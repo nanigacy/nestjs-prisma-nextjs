@@ -15,6 +15,8 @@ NestJSとPrismaでAPIサーバを構築する
 
 PostgresQLをDockerでセットアップします。
 
+> 💡 なぜMySQLではなく、PostgreSQLか？ A.ほとんどのチュートリアルが、PostgreSQLを最初に使うので追従する
+
 ```bash
 docker-compose up -d
 ```
@@ -49,6 +51,6 @@ yarn start:dev
 |http://localhost:3000|アプリケーション URL|
 |postgresql://postgres:password@localhost:5432/mydb|PostgreSQL URL|
 
-> 💡 PostgreSQLのDBクライアントは、[TablePlus | Modern, Native Tool for Database Management](https://tableplus.com/)を使っています。
+> 💡 PostgreSQLのDBクライアントは、[TablePlus | Modern, Native Tool for Database Management](https://tableplus.com/)を使っています
 
 ## デプロイ ⛴
