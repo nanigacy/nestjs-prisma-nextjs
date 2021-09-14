@@ -13,12 +13,12 @@ NestJSとPrismaでAPIサーバを構築する
 
 ## 開発環境セットアップ 💡
 
-PostgresQLをDockerでセットアップします。
+ NestJSとPostgreSQLをDockerでセットアップします。
 
 > 💡 なぜMySQLではなく、PostgreSQLか？ A.ほとんどのチュートリアルが、PostgreSQLを最初に使うので追従する
 
 ```bash
-docker-compose up -d
+docker-compose up
 ```
 
 `.env`をセットアップします。
@@ -30,21 +30,20 @@ cp .env.example .env
 依存関係を取得します。
 
 ```bash
+docker-compose exec app bash
+# コンテナ内 #
 yarn install
 ```
 
 Prismaをセットアップします。
 
 ```bash
+# コンテナ内 #
 npx prisma generate
 npx prisma migrate dev
 ```
 
-NestJSアプリケーションを立ち上げます。
-
-```bash
-yarn start:dev
-```
+`docker-compose up`を実行すると、`start:dev`からNestJSアプリケーションを立ち上がります。
 
 |URL|解説|
 |---|---|
