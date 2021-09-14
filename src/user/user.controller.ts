@@ -1,11 +1,29 @@
-import { Controller } from '@nestjs/common';
-import { Get, Post, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Query,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+} from '@nestjs/common';
+import { UserService } from './user.service';
+import { User as UserModel } from '@prisma/client';
 
 @Controller('user')
 export class UserController {
+  constructor(private readonly userService: UserService) {}
+
+  @Get(':id')
+  async getUser(@Param('id') id: string): Promise<UserModel | null> {
+    return this.userService.user({ id: Number(id) });
+  }
+
+  // Note: Queryを使用する場合
   @Get()
-  async getUser(): Promise<string> {
-    return 'GET User';
+  async getUserById(@Query() query: { id: string }): Promise<UserModel | null> {
+    return this.userService.user({ id: Number(query.id) });
   }
 
   @Post()
@@ -13,7 +31,7 @@ export class UserController {
     return 'Post User';
   }
 
-  @Patch()
+  @Put()
   async patchUser(): Promise<string> {
     return 'Patch User';
   }

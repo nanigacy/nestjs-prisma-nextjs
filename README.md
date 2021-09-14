@@ -67,13 +67,13 @@ APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postm
 |ヘッダーの指定|`-H` or `--request`|
 |データ指定|`-d` or `--data`|
 
-### GET `/user/`
+### GET `/user/:id`
 
 ```bash
 curl -i \
   --header "Accept: application/json" \
   --request GET \
-  http://localhost:8080/user/
+  http://localhost:8080/user/1
 ```
 
 ### POST `/user/`
