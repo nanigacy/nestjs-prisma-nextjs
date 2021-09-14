@@ -53,3 +53,52 @@ npx prisma migrate dev
 > 💡 PostgreSQLのDBクライアントは、[TablePlus | Modern, Native Tool for Database Management](https://tableplus.com/)を使っています
 
 ## デプロイ ⛴
+
+## APIリファレンス ⚡️
+
+APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postman API Platform](https://www.postman.com/)をオススメします。複雑なAPIは、Postmanが良いです。
+
+### 汎用的なCurlオプション
+
+|オプション|解説|
+|---|---|
+|出力にHTTP応答ヘッダーを含めます|`-i` or `-include`|
+|HTTPメソッドの指定|`-X` or `--header`|
+|ヘッダーの指定|`-H` or `--request`|
+|データ指定|`-d` or `--data`|
+
+### GET `/user/`
+
+```bash
+curl -i \
+  --header "Accept: application/json" \
+  --request GET \
+  http://localhost:3000/user/
+```
+
+### POST `/user/`
+
+```bash
+curl -i \
+  --header "Accept: application/json" \
+  --request POST --data "email":"example@gmail.com" \
+  http://localhost:3000/user/
+```
+
+### PATCH `/user/`
+
+```bash
+curl -i \
+  --header "Accept: application/json" \
+  --request PATCH --data "email":"example@gmail.com" \
+  http://localhost:3000/user/
+```
+
+### DELETE `/user/`
+
+```bash
+curl -i \
+  --header "Accept: application/json" \
+  --request DELETE \
+  http://localhost:3000/user/
+```
