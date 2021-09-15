@@ -72,7 +72,7 @@ APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postm
 ```bash
 curl -i \
   -H "Content-Type: application/json" \
-  -H GET \
+  -X GET \
   http://localhost:8080/users/1
 ```
 
@@ -90,7 +90,7 @@ curl -i \
 ```bash
 curl -i \
   -H "Content-Type: application/json" \
-  -H PUT -d '{"email":"example01@gmail.com"}' \
+  -X PUT -d '{"email":"example01@gmail.com"}' \
   http://localhost:8080/users/1
 ```
 
@@ -99,6 +99,6 @@ curl -i \
 ```bash
 curl -i \
   -H "Content-Type: application/json" \
-  -H DELETE \
+  -X DELETE \
   http://localhost:8080/users/1
 ```
