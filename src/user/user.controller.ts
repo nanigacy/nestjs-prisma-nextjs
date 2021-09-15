@@ -22,9 +22,12 @@ export class UserController {
 
   // Note: Queryを使用する場合
   @Get()
-  async getUserById(@Query() query: { id: string }): Promise<UserModel | null> {
-    return this.userService.user({ id: Number(query.id) });
+  async getUserById(): Promise<string> {
+    return 'Get User';
   }
+  // async getUserById(@Query() query: { id: string }): Promise<UserModel | null> {
+  //   return this.userService.user({ id: Number(query.id) });
+  // }
 
   @Post()
   async postUser(): Promise<string> {
