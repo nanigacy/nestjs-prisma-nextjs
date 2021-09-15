@@ -67,38 +67,38 @@ APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postm
 |ヘッダーの指定|`-H` or `--request`|
 |データ指定|`-d` or `--data`|
 
-### GET `/user/:id`
+### GET `/users/:id`
 
 ```bash
 curl -i \
-  --header "Accept: application/json" \
+  --header "Content-Type: application/json" \
   --request GET \
-  http://localhost:8080/user/1
+  http://localhost:8080/users/1
 ```
 
-### POST `/user/`
+### POST `/users/`
 
 ```bash
 curl -i \
-  --header "Accept: application/json" \
-  --request POST --data "email":"example@gmail.com" \
-  http://localhost:8080/user/
+  -H "Content-Type: application/json" \
+  -X POST -d '{"email":"example.com"}' \
+  http://localhost:8080/users/
 ```
 
-### PATCH `/user/`
+### PUT `/users/:id`
 
 ```bash
 curl -i \
-  --header "Accept: application/json" \
-  --request PATCH --data "email":"example@gmail.com" \
-  http://localhost:8080/user/
+  --header "Content-Type: application/json" \
+  --request PUT --data '{"email":"example01@gmail.com"}' \
+  http://localhost:8080/users/1
 ```
 
-### DELETE `/user/`
+### DELETE `/users/:id`
 
 ```bash
 curl -i \
-  --header "Accept: application/json" \
+  --header "Content-Type: application/json" \
   --request DELETE \
-  http://localhost:8080/user/
+  http://localhost:8080/users/1
 ```
