@@ -22,7 +22,7 @@ steps:
       - '--region=$_DEPLOY_REGION'
       - '--allow-unauthenticated'
       - "--update-env-vars"
-      - "DATABASE_URL=${_DATABASE_URL}
+      - "DATABASE_URL=${_DATABASE_URL}"
     id: Deploy
     entrypoint: gcloud
 images:
