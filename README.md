@@ -109,5 +109,4 @@ curl -i \
 
 ```bash
 curl -X POST http://localhost:8080/auth/login -d '{"username": "username", "password": "password"}' -H "Content-Type: application/json"
-# => {"id":5,"username":"username","email":"example02.com"}% 
 ```
