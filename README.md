@@ -13,9 +13,9 @@ NestJSとPrismaでAPIサーバを構築する
 
 ## 開発環境セットアップ 💡
 
- NestJSとPostgreSQLをDockerでセットアップします。
+ NestJS と PostgreSQL を Docker でセットアップします。
 
-> 💡 なぜMySQLではなく、PostgreSQLか？ A.ほとんどのチュートリアルが、PostgreSQLを最初に使うので追従する
+> 💡 なぜMySQLではなく、 PostgreSQL か？ A.ほとんどのチュートリアルが、 PostgreSQL を最初に使うので追従する
 
 ```bash
 docker-compose up
@@ -31,34 +31,40 @@ cp .env.example .env
 
 ```bash
 docker-compose exec app bash
-# コンテナ内 #
+# コンテナ内
 yarn install
 ```
 
 Prismaをセットアップします。
 
 ```bash
-# コンテナ内 #
+# コンテナ内
 npx prisma generate
 npx prisma migrate dev
 ```
 
-`docker-compose up`を実行すると、`start:dev`からNestJSアプリケーションを立ち上がります。
+`docker-compose up` を実行すると、 `start:dev` から NestJS アプリケーションを立ち上がります。
 
 |URL|解説|
 |---|---|
 |http://localhost:8080|アプリケーション URL|
 |postgresql://postgres:password@db:5432/mydb|PostgreSQL URL|
 
-> 💡 PostgreSQLのDBクライアントは、[TablePlus](https://tableplus.com/)を使っています
+> 💡 PostgreSQLのDBクライアントは、 [TablePlus](https://tableplus.com/) を使っています
 
 ## デプロイ ⛴
 
+GCP Cloud Run にデプロイされます。
+
+### アーキテクチャ
+
+github -> cloud build -> cloud run
+
 ## APIリファレンス ⚡️
 
-APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postman API Platform](https://www.postman.com/)をオススメします。複雑なAPIは、Postmanが良いです。
+APIの確認は、 [curl](https://curl.se/docs/manpage.html) もしくは、 [Postman API Platform](https://www.postman.com/) をオススメします。複雑な API は、 Postman が良いです。
 
-### 汎用的なCurlオプション
+### 汎用的な `curl` オプション
 
 |オプション|解説|
 |---|---|
