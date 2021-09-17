@@ -81,7 +81,7 @@ curl -i \
 ```bash
 curl -i \
   -H "Content-Type: application/json" \
-  -X POST -d '{"email":"example.com"}' \
+  -X POST -d '{"email":"example.com", "username":"username", "password": "password"}' \
   http://localhost:8080/users/
 ```
 
@@ -101,4 +101,13 @@ curl -i \
   -H "Content-Type: application/json" \
   -X DELETE \
   http://localhost:8080/users/1
+```
+
+## 認証
+
+### POST  `/auth/login`
+
+```bash
+curl -X POST http://localhost:8080/auth/login -d '{"username": "username", "password": "password"}' -H "Content-Type: application/json"
+# => {"id":5,"username":"username","email":"example02.com"}% 
 ```

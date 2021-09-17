@@ -21,7 +21,7 @@ export class UsersController {
 
   @Post()
   async createUser(
-    @Body() postData: { email: string },
+    @Body() postData: { email: string; username: string; password: string },
   ): Promise<UserModel | null> {
     return this.userService.createUser(postData);
   }
