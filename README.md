@@ -1,6 +1,6 @@
 ## NestJS Prisma 🚅
 
-NestJSとPrismaでAPIサーバを構築する
+NestJS と Prisma で API サーバを構築する
 
 ## ドキュメント 📃
 
