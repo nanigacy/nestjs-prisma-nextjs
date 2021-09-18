@@ -107,6 +107,20 @@ curl -i \
 
 ### POST  `/auth/login`
 
+- JWTの作成
+
 ```bash
 curl -X POST http://localhost:8080/auth/login -d '{"username": "username", "password": "password"}' -H "Content-Type: application/json"
+```
+
+### POST  `/profile`
+
+- プロフィール取得
+
+機関が切れた場合、`{"statusCode":401,"message":"Unauthorized"}%`
+
+```bash
+curl -X GET http://localhost:8080/profile \
+  -H "Authorization: Bearer xxxxx"\
+  -H "Content-Type: application/json"
 ```
