@@ -56,7 +56,8 @@ npx prisma migrate dev
 
 ## APIリファレンス ⚡️
 
-APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postman API Platform](https://www.postman.com/)をオススメします。複雑なAPIは、Postmanが良いです。
+APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postman API Platform](https://www.postman.com/)をオススメします。
+複雑なAPIは、Postmanが良いです。
 
 ### 汎用的なCurlオプション
 
@@ -67,60 +68,53 @@ APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postm
 |ヘッダーの指定|`-H` or `--request`|
 |データ指定|`-d` or `--data`|
 
-### GET `/users/:id`
-
-```bash
-curl -i \
-  -H "Content-Type: application/json" \
-  -X GET \
-  http://localhost:8080/users/1
-```
-
-### POST `/users/`
-
-```bash
-curl -i \
-  -H "Content-Type: application/json" \
-  -X POST -d '{"email":"example.com", "username":"username", "password": "password"}' \
-  http://localhost:8080/users/
-```
-
-### PUT `/users/:id`
-
-```bash
-curl -i \
-  -H "Content-Type: application/json" \
-  -X PUT -d '{"email":"example01@gmail.com"}' \
-  http://localhost:8080/users/1
-```
-
-### DELETE `/users/:id`
-
-```bash
-curl -i \
-  -H "Content-Type: application/json" \
-  -X DELETE \
-  http://localhost:8080/users/1
-```
-
 ## 認証
+
+### POST  `/auth/signup`
+
+`/auth/signup`は、ユーザー作成の役割を持っています。
+
+> 💡 なぜ`username`か？ A.emailだとメールアドレスが紛失した場合に、復旧できないから
+
+```bash
+curl -X POST http://localhost:8080/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"username":"username", "password": "password"}'
+```
 
 ### POST  `/auth/login`
 
-- JWTの作成
+> 💡 `/auth/login`にリクエストするとJWTトークン(`{ access_token: xxxxx }`)が返却されます。認証に失敗すると、`{ "statusCode": 401, "message": "Unauthorized" }`が返却されます。
 
 ```bash
-curl -X POST http://localhost:8080/auth/login -d '{"username": "username", "password": "password"}' -H "Content-Type: application/json"
+curl -X POST http://localhost:8080/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "username", "password": "password"}'
 ```
 
-### POST  `/profile`
+## User 
 
-- プロフィール取得
-
-機関が切れた場合、`{"statusCode":401,"message":"Unauthorized"}%`
+### GET `/users`
 
 ```bash
-curl -X GET http://localhost:8080/profile \
-  -H "Authorization: Bearer xxxxx"\
-  -H "Content-Type: application/json"
+curl -X GET http://localhost:8080/users/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+### PUT `/users`
+
+```bash
+curl -X PUT http://localhost:8080/users/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -d '{"email": "example@gmail.com"}'
+```
+
+### DELETE `/users`
+
+```bash
+curl -X DELETE http://localhost:8080/users/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $ACCESS_TOKEN"
 ```
