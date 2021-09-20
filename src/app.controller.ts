@@ -19,12 +19,14 @@ export class AppController {
 
   @Post('auth/signup')
   async signup(@Body() postData: { username: string; password: string }) {
-    // TODO: 👇 access_tokenを返す
+    // ポイント1: 👇 passwordをハッシュ化する
     const saltOrRounds = 10;
     const password = await bcrypt.hash(postData.password, saltOrRounds);
-    return this.userService.createUser({
+    const user = await this.userService.createUser({
       password: password,
       username: postData.username,
     });
+    // ポイント2: 👇 access_tokenを返す
+    return this.authService.login(user);
   }
 }
