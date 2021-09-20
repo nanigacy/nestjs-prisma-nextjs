@@ -6,39 +6,41 @@ import {
   Delete,
   Body,
   Param,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User as UserModel } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
-  @Get(':id')
-  async getUser(@Param('id') id: string): Promise<UserModel | null> {
-    return this.userService.user({ id: Number(id) });
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async getUser(@Request() req: any): Promise<UserModel | null> {
+    const userId = req.user.id;
+    return this.userService.user({ id: Number(userId) });
   }
 
-  @Post()
-  async createUser(
-    @Body() postData: { email: string },
-  ): Promise<UserModel | null> {
-    return this.userService.createUser(postData);
-  }
-
-  @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  @Put()
   async updateUser(
-    @Param('id') id: string,
+    @Request() req: any,
     @Body() updateData: { email: string },
   ): Promise<UserModel | null> {
+    const userId = req.user.id;
     return this.userService.updateUser({
-      where: { id: Number(id) },
+      where: { id: Number(userId) },
       data: updateData,
     });
   }
 
-  @Delete(':id')
-  async deleteUser(@Param('id') id: string): Promise<UserModel | null> {
-    return this.userService.deleteUser({ id: Number(id) });
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  async deleteUser(@Request() req: any): Promise<UserModel | null> {
+    const userId = req.user.id;
+    return this.userService.deleteUser({ id: Number(userId) });
   }
 }
