@@ -1,15 +1,8 @@
-import {
-  Controller,
-  Get,
-  Request,
-  Post,
-  UseGuards,
-  Body,
-} from '@nestjs/common';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { Controller, Request, Post, UseGuards, Body } from '@nestjs/common';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { UserService } from './user/user.service';
+import * as bcrypt from 'bcrypt';
 
 @Controller()
 export class AppController {
@@ -25,9 +18,13 @@ export class AppController {
   }
 
   @Post('auth/signup')
-  signup(@Body() postData: { username: string; password: string }) {
+  async signup(@Body() postData: { username: string; password: string }) {
     // TODO: 👇 access_tokenを返す
-    console.log('postData:', postData);
-    return this.userService.createUser(postData);
+    const saltOrRounds = 10;
+    const password = await bcrypt.hash(postData.password, saltOrRounds);
+    return this.userService.createUser({
+      password: password,
+      username: postData.username,
+    });
   }
 }
