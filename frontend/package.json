@@ -1,0 +1,25 @@
+{
+  "name": "nestjs-prisma-client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.3.4",
+    "axios": "^0.21.4",
+    "next": "11.1.2",
+    "postcss": "^8.3.6",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "tailwindcss": "^2.2.15"
+  },
+  "devDependencies": {
+    "@tailwindcss/jit": "^0.1.18",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2"
+  }
+}
