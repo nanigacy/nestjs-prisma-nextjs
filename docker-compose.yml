@@ -26,6 +26,12 @@ services:
     ports:
       - '8080:8080'
       - '5555:5555'
+    command: >
+      bash -c "
+        yarn &&
+        npx prisma generate &&
+        yarn start:dev
+      "
     networks:
       - default
     depends_on:
