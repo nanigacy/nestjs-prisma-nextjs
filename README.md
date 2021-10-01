@@ -1,11 +1,12 @@
 ## NestJS Prisma 🚅
 
-NestJS と Prisma で API サーバを構築する
+[NestJS](https://nestjs.com/) と [Prisma](https://www.prisma.io/) と [Next.js](https://nextjs.org/) でプロジェクトベースを構築
 
 ## ドキュメント 📃
 
 - [NestJS Database & Prisma | Type-safe ORM for SQL Databases](https://www.prisma.io/nestjs)
 - [Prisma | NestJS - A progressive Node.js framework](https://docs.nestjs.com/recipes/prisma#prisma)
+- [Getting Started \| Next\.js](https://nextjs.org/docs/getting-started)
 
 ## 確認バージョン
 
@@ -13,44 +14,51 @@ NestJS と Prisma で API サーバを構築する
 
 ## 開発環境セットアップ 💡
 
- NestJS と PostgreSQL を Docker でセットアップします。
+### API と DB の起動
 
-> 💡 なぜMySQLではなく、 PostgreSQL か？ A.ほとんどのチュートリアルが、 PostgreSQL を最初に使うので追従する
-
-```bash
-docker-compose up
-```
-
-`.env`をセットアップします。
-
-```bash
-cp .env.example .env
+`.env` をセットアップします。
+``` bash
+cp api/.env.example api/.env
 ```
 
 依存関係を取得します。
+``` bash
+$ docker compose run --rm api bash
+# api コンテナ内
+$ yarn
+```
 
+コンテナを起動します
 ```bash
-docker-compose exec app bash
-# コンテナ内
-yarn install
+$ docker compose up
 ```
 
 Prismaをセットアップします。
 
-```bash
-# コンテナ内
-npx prisma generate
-npx prisma migrate dev
+``` bash
+# api コンテナ内
+$ npx prisma generate
+$ npx prisma migrate dev
 ```
 
-`docker-compose up` を実行すると、 `start:dev` から NestJS アプリケーションを立ち上がります。
+`docker compose up` を実行すると、 `start:dev` から NestJS の API が起動します。
+
+### フロントアプリの起動
+
+``` bash
+$ cd frontend
+$ yarn dev # http://localhost:3000 で起動されます
+```
+
+### 起動アプリケーション一覧
 
 |URL|解説|
 |---|---|
-|http://localhost:8080|アプリケーション URL|
+|http://localhost:8080|API URL|
+|http://localhost:3000|フロントアプリ URL|
 |postgresql://postgres:password@db:5432/mydb|PostgreSQL URL|
 
-> 💡 PostgreSQLのDBクライアントは、 [TablePlus](https://tableplus.com/) を使っています
+> 💡 PostgreSQLのDBクライアントは、 [TablePlus](https://tableplus.com/) を使っています。
 
 ## デプロイ ⛴
 
@@ -62,8 +70,8 @@ github -> cloud build -> cloud run
 
 ## APIリファレンス ⚡️
 
-APIの確認は、[Curl](https://curl.se/docs/manpage.html)もしくは、[Postman API Platform](https://www.postman.com/)をオススメします。
-複雑なAPIは、Postmanが良いです。
+APIの確認は、 [curl](https://curl.se/docs/manpage.html) もしくは、 [Postman API Platform](https://www.postman.com/) をオススメします。
+複雑な API は、 Postman が良いです。
 
 ### 汎用的な `curl` オプション
 
@@ -123,11 +131,4 @@ curl -X PUT http://localhost:8080/users/ \
 curl -X DELETE http://localhost:8080/users/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $ACCESS_TOKEN"
-```
-
-## Next.js で実行する
-
-```bash
-cd client
-yarn dev # http://localhost:3000 で起動されます
 ```

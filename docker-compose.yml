@@ -10,22 +10,28 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydb
+      POSTGRES_DB: nestjs-prisma-nextjs
     networks:
       - default
 
-  app:
+  api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./api/Dockerfile
     environment:
       - NODE_ENV=development
       - PORT=8080
     volumes:
-      - ./backend/:/usr/src/app
+      - ./api/:/usr/src/app
     ports:
       - '8080:8080'
       - '5555:5555'
+    command: >
+      bash -c "
+        yarn &&
+        npx prisma generate &&
+        yarn start:dev
+      "
     networks:
       - default
     depends_on:
