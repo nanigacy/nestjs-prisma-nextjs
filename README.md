@@ -124,3 +124,10 @@ curl -X DELETE http://localhost:8080/users/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $ACCESS_TOKEN"
 ```
+
+## Next.js で実行する
+
+```bash
+cd client
+yarn dev # http://localhost:3000 で起動されます
+```

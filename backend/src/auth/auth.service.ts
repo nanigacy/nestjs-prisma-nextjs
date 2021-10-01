@@ -27,4 +27,22 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
+
+  async googleLogin(req: any) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+
+    console.log('req.user:', req.user);
+
+    // TODO: 👇 ユーザーの取得
+
+    // TODO: 👇 ユーザーが存在しない場合、ユーザーの作成
+
+    // TODO: 👇 JWTトークンを返す
+    return {
+      message: 'User information from google',
+      user: req.user,
+    };
+  }
 }
