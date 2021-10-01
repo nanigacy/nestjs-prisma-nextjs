@@ -23,17 +23,19 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req: any) {
+    console.log("✅ req:", req);
     return this.authService.login(req.user);
   }
 
   @Post('auth/signup')
-  async signup(@Body() postData: { username: string; password: string }) {
+  async signup(@Body() postData: { email: string; password: string }) {
+    console.log("✅ postData:", postData);
     // ポイント1: 👇 passwordをハッシュ化する
     const saltOrRounds = 10;
     const password = await bcrypt.hash(postData.password, saltOrRounds);
     const user = await this.userService.createUser({
       password: password,
-      username: postData.username,
+      email: postData.email,
     });
     // ポイント2: 👇 access_tokenを返す
     return this.authService.login(user);
@@ -42,7 +44,9 @@ export class AppController {
   @Get('/auth/google')
   @UseGuards(AuthGuard('google'))
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async googleAuth(@Req() req) {}
+  async googleAuth(@Req() req) {
+    console.log('✅ Google OAuth');
+  }
 
   @Get('/google/redirect')
   @UseGuards(AuthGuard('google'))

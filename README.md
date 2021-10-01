@@ -17,10 +17,13 @@
 ### API と DB の起動
 
 `.env` をセットアップします。
+
 ``` bash
 $ cp api/.env.example api/.env
 ```
+
 コンテナを起動します。
+
 ```bash
 $ docker compose up
 ```
@@ -79,12 +82,10 @@ APIの確認は、 [curl](https://curl.se/docs/manpage.html) もしくは、 [Po
 
 `/auth/signup`は、ユーザー作成の役割を持っています。
 
-> 💡 なぜ`username`か？ A.emailだとメールアドレスが紛失した場合に、復旧できないから
-
 ```bash
 curl -X POST http://localhost:8080/auth/signup \
   -H "Content-Type: application/json" \
-  -d '{"username":"username", "password": "password"}'
+  -d '{"email":"example@gmail.com", "password": "password"}'
 ```
 
 ### POST  `/auth/login`
@@ -94,7 +95,7 @@ curl -X POST http://localhost:8080/auth/signup \
 ```bash
 curl -X POST http://localhost:8080/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username": "username", "password": "password"}'
+  -d '{"email":"example@gmail.com", "password": "password"}'
 ```
 
 ## User 

@@ -1,7 +1,8 @@
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
-    "email" TEXT,
+    "email" TEXT NOT NULL,
+    "password" TEXT,
 
     PRIMARY KEY ("id")
 );

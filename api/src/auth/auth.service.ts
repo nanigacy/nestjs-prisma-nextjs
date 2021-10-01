@@ -10,8 +10,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.userService.user({ username: username });
+  async validateUser(email: string, pass: string): Promise<any> {
+    console.log("✅ email:", email);
+    console.log("✅ pass:", pass);
+    const user = await this.userService.user({ email: email });
     // 👇 bcryptでハッシュ比較する
     const isMatch = await bcrypt.compare(pass, user.password);
     if (isMatch) {
@@ -22,7 +24,8 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.id };
+    console.log("✅ login.user:", user)
+    const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -35,11 +38,6 @@ export class AuthService {
 
     console.log('req.user:', req.user);
 
-    // TODO: 👇 ユーザーの取得
-
-    // TODO: 👇 ユーザーが存在しない場合、ユーザーの作成
-
-    // TODO: 👇 JWTトークンを返す
     return {
       message: 'User information from google',
       user: req.user,
