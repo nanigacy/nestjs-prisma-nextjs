@@ -18,27 +18,17 @@
 
 `.env` をセットアップします。
 ``` bash
-cp api/.env.example api/.env
+$ cp api/.env.example api/.env
 ```
-
-依存関係を取得します。
-``` bash
-$ docker compose run --rm api bash
-# api コンテナ内
-$ yarn
-```
-
-コンテナを起動します
+コンテナを起動します。
 ```bash
 $ docker compose up
 ```
 
-Prismaをセットアップします。
+Prisma で Database を migrate します。
 
 ``` bash
-# api コンテナ内
-$ npx prisma generate
-$ npx prisma migrate dev
+$ docker-compose exec api npx prisma migrate dev
 ```
 
 `docker compose up` を実行すると、 `start:dev` から NestJS の API が起動します。
@@ -46,8 +36,9 @@ $ npx prisma migrate dev
 ### フロントアプリの起動
 
 ``` bash
-$ cd frontend
-$ yarn dev # http://localhost:3000 で起動されます
+$ cd client
+$ yarn  # 依存関係を解消します
+$ yarn dev  # http://localhost:3000 で起動されます
 ```
 
 ### 起動アプリケーション一覧
