@@ -28,7 +28,7 @@ $ docker compose up
 Prisma で Database を migrate します。
 
 ``` bash
-$ docker-compose exec api npx prisma migrate dev
+$ docker compose exec api npx prisma migrate dev
 ```
 
 `docker compose up` を実行すると、 `start:dev` から NestJS の API が起動します。
@@ -47,7 +47,7 @@ $ yarn dev  # http://localhost:3000 で起動されます
 |---|---|
 |http://localhost:8080|API URL|
 |http://localhost:3000|フロントアプリ URL|
-|postgresql://postgres:password@db:5432/mydb|PostgreSQL URL|
+|postgresql://postgres:password@db:5432/nestjs-prisma-nextjs|PostgreSQL URL|
 
 > 💡 PostgreSQLのDBクライアントは、 [TablePlus](https://tableplus.com/) を使っています。
 
