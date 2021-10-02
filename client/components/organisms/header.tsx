@@ -6,10 +6,10 @@ import UserMenu from '@/components/molecules/user-menu';
 
 export default function Header() {
   return (
-    <Popover className="relative mx-auto bg-white max-w-7xl">
+    <Popover className="relative max-w-full mx-auto bg-white">
       {({ open }) => (
         <>
-          <div className="flex items-center justify-between px-4 py-6 sm:px-6 md:justify-start md:space-x-10">
+          <div className="flex items-center justify-between px-4 py-6 shadow sm:px-6 md:justify-start md:space-x-10">
             <div>
               <Link href="/">
                 <a className="flex">
@@ -25,7 +25,7 @@ export default function Header() {
               </Popover.Button>
             </div>
             <div className="hidden md:flex-1 md:flex md:items-center md:justify-between">
-              <div className="text-2xl font-bold text-black">
+              <div className="text-xl font-bold text-black">
                 NestJS Prisma NextJS
               </div>
               <div />

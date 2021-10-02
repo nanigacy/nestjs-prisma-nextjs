@@ -1,6 +1,12 @@
 ## NestJS Prisma Next.js 🚅
 
-[NestJS](https://nestjs.com/) と [Prisma](https://www.prisma.io/) と [Next.js](https://nextjs.org/) でプロジェクトベースを構築
+- [NestJS](https://nestjs.com/)
+- [Next.js](https://nextjs.org/)
+- [Prisma](https://www.prisma.io/)
+- [Auth0](https://auth0.com/jp)
+- [Stripe](https://stripe.com/jp)
+
+によるSaasプロジェクトテンプレートを構築する
 
 ## ドキュメント 📃
 
@@ -40,6 +46,7 @@ $ docker compose exec api npx prisma migrate dev
 ### フロントアプリの起動
 
 ``` bash
+$ cp client/.env.example client/.env
 $ cd client
 $ yarn  # 依存関係を解消します
 $ yarn dev  # http://localhost:3000 で起動されます
@@ -77,31 +84,11 @@ APIの確認は、 [curl](https://curl.se/docs/manpage.html) もしくは、 [Po
 |ヘッダーの指定|`-H` or `--request`|
 |データ指定|`-d` or `--data`|
 
-## 認証
-
-### POST  `/auth/signup`
-
-`/auth/signup`は、ユーザー作成の役割を持っています。
-
-```bash
-curl -X POST http://localhost:8080/auth/signup \
-  -H "Content-Type: application/json" \
-  -d '{"email":"example@gmail.com", "password": "password"}'
-```
-
-### POST  `/auth/login`
-
-> 💡 `/auth/login`にリクエストするとJWTトークン(`{ access_token: xxxxx }`)が返却されます。認証に失敗すると、`{ "statusCode": 401, "message": "Unauthorized" }`が返却されます。
-
-```bash
-curl -X POST http://localhost:8080/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"example@gmail.com", "password": "password"}'
-```
-
 ## User 
 
 ### GET `/users`
+
+`$ACCESS_TOKEN`はAuth0から取得します。
 
 ```bash
 curl -X GET http://localhost:8080/users/ \
