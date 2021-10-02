@@ -5,6 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckForm from '@/components/molecules/check-form';
+import { LockClosedIcon, UserIcon, DatabaseIcon, CreditCardIcon, NewspaperIcon } from "@heroicons/react/outline";
 
 export default function Home() {
   const {
@@ -15,8 +16,9 @@ export default function Home() {
     loginWithRedirect,
     logout,
   } = useAuth0();
-
+  
   const [apiResponse, setApiResponse] = useState(null);
+  const [auth0User, setAuth0User] = useState(null);
 
   // const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
   const [stripePromise, setStripePromise] = useState(() =>
@@ -32,7 +34,6 @@ export default function Home() {
         });
 
         console.log('✅ accessToken:', accessToken);
-        console.log('✅ user: ', user);
 
         const res = await axios.post(
           'http://localhost:8080/users/',
@@ -46,8 +47,8 @@ export default function Home() {
           }
         );
 
-        console.log('✅ res', res);
         setApiResponse(JSON.stringify(res.data));
+        setAuth0User(JSON.stringify(user))
       } catch (e) {
         console.log(e.message);
       }
@@ -59,12 +60,15 @@ export default function Home() {
   const publicApi = async () => {
     try {
       const res = await axios.get('http://localhost:8080/users/public');
-      console.log('✅ res', res);
       setApiResponse(JSON.stringify(res.data));
     } catch (e) {
       console.log(e.message);
       setApiResponse(JSON.stringify(e.message));
     }
+  };
+
+  const deleteUserApi = async () => {
+    console.log("🚨 deleteUserApi")
   };
 
   const privateApi = async () => {
@@ -81,7 +85,6 @@ export default function Home() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log('✅ res', res);
       setApiResponse(JSON.stringify(res.data));
     } catch (e) {
       console.log(e.message);
@@ -92,10 +95,10 @@ export default function Home() {
   const LoginButton = () => {
     return (
       <button
-        className="p-2 bg-gray-200 rounded-md hover:bg-gray-300"
+        className="p-2 bg-gray-200 rounded-md shadow hover:bg-gray-300"
         onClick={() => loginWithRedirect()}
       >
-        Log In
+        ログイン
       </button>
     );
   };
@@ -103,10 +106,10 @@ export default function Home() {
   const LogoutButton = () => {
     return (
       <button
-        className="p-2 ml-2 bg-gray-200 rounded-md hover:bg-gray-300"
+        className="p-2 ml-2 bg-gray-200 rounded-md shadow hover:bg-gray-300"
         onClick={() => logout({ returnTo: window.location.origin })}
       >
-        Log Out
+        ログアウト
       </button>
     );
   };
@@ -120,8 +123,12 @@ export default function Home() {
       isAuthenticated && (
         <div>
           <img src={user.picture} alt={user.name} />
-          <p>name: {user.name}</p>
-          <p>email: {user.email}</p>
+          <div className="my-4">
+            <p>お名前: {user.name}</p>
+            <p>メールアドレス: {user.email}</p>
+            <p>カード情報: </p>
+            <p>プラン: </p>
+          </div>
         </div>
       )
     );
@@ -134,37 +141,74 @@ export default function Home() {
       </Head>
       <div className="justify-center max-w-4xl mx-auto">
         <div className="p-4 my-4 shadow bg-gray-50">
-          <h2 className="my-4 text-2xl">Auth0</h2>
-          <LoginButton />
-          <LogoutButton />
+          <h2 className="inline-flex items-center my-4 text-2xl">
+            <div className="p-1 text-white bg-gray-900 rounded-md">
+              <LockClosedIcon className="w-6 h-6" aria-hidden="true" />
+            </div>
+            <span className="ml-2 font-bold">認証(Auth0)</span>
+          </h2>
+          <div>
+            <LoginButton />
+            <LogoutButton />
+            <button
+              className="p-2 ml-2 text-white bg-red-600 rounded-md hover:bg-red-500"
+              onClick={deleteUserApi}
+            >
+              アカウント削除
+            </button>
+          </div>
+          <div className="p-4 my-6 text-white bg-black">{auth0User}</div>
         </div>
         <div className="p-4 my-4 shadow bg-gray-50">
-          <h2 className="my-4 text-2xl">Login User Info</h2>
+          <h2 className="inline-flex items-center my-4 text-2xl">
+            <div className="p-1 text-white bg-gray-900 rounded-md">
+              <UserIcon className="w-6 h-6" aria-hidden="true" />
+            </div>
+            <span className="ml-2 font-bold">ユーザー情報</span>
+          </h2>
           <Profile />
         </div>
         <div className="p-4 my-4 shadow bg-gray-50">
-          <h2 className="my-4 text-2xl">
-            API Testing(Nest.js Server api root)
+          <h2 className="inline-flex items-center my-4 text-2xl">
+            <div className="p-1 text-white bg-gray-900 rounded-md">
+              <DatabaseIcon className="w-6 h-6" aria-hidden="true" />
+            </div>
+            <span className="ml-2 font-bold">API Test(Nest.js)</span>
           </h2>
-          <button
-            className="p-2 bg-gray-200 rounded-md hover:bg-gray-300"
-            onClick={publicApi}
-          >
-            Public API Call
-          </button>
-          <button
-            className="p-2 ml-2 bg-gray-200 rounded-md hover:bg-gray-300"
-            onClick={privateApi}
-          >
-            Private API Call
-          </button>
-          <pre>{apiResponse}</pre>
+          <div>
+            <button
+              className="p-2 bg-gray-200 rounded-md hover:bg-gray-300"
+              onClick={publicApi}
+            >
+              Public API Call
+            </button>
+            <button
+              className="p-2 ml-2 bg-gray-200 rounded-md hover:bg-gray-300"
+              onClick={privateApi}
+            >
+              Private API Call
+            </button>
+          </div>
+          <div className="p-4 my-6 text-white bg-black">{apiResponse}</div>
         </div>
         <div className="p-4 my-4 shadow bg-gray-50">
-          <h2 className="my-4 text-2xl">Stripe</h2>
+          <h2 className="inline-flex items-center my-4 text-2xl">
+            <div className="p-1 text-white bg-gray-900 rounded-md">
+              <CreditCardIcon className="w-6 h-6" aria-hidden="true" />
+            </div>
+            <span className="ml-2 font-bold">Stripe カード情報設定</span>
+          </h2>
           <Elements stripe={stripePromise}>
             <CheckForm />
           </Elements>
+        </div>
+        <div className="p-4 my-4 shadow bg-gray-50">
+          <h2 className="inline-flex items-center my-4 text-2xl">
+            <div className="p-1 text-white bg-gray-900 rounded-md">
+              <NewspaperIcon className="w-6 h-6" aria-hidden="true" />
+            </div>
+            <span className="ml-2 font-bold">Stripe プラン変更</span>
+          </h2>
         </div>
       </div>
     </>

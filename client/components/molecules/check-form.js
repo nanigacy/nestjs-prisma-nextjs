@@ -34,18 +34,21 @@ export default function CheckoutForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <CardElement
+      <CardElement className="p-4 border rounded-sm"
         options={{
+          iconStyle: 'solid',
           style: {
             base: {
+              iconColor: '#c4f0ff',
+              color: '#000',
+              fontWeight: 500,
+              fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
               fontSize: '16px',
-              color: '#424770',
-              '::placeholder': {
-                color: '#aab7c4',
-              },
+              fontSmoothing: 'antialiased',
             },
             invalid: {
-              color: '#9e2146',
+              iconColor: 'red',
+              color: 'red',
             },
           },
         }}
