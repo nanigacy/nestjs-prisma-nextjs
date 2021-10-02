@@ -17,12 +17,11 @@
 ### API と DB の起動
 
 `.env` をセットアップします。
+`AUTH0_ISSUER_URL` を正しい値に変更する。
 
 ``` bash
 $ cp api/.env.example api/.env
 ```
-
-`AUTH0_ISSUER_URL` を正しい値に変更する。
 
 コンテナを起動します。
 
