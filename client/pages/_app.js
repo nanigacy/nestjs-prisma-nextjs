@@ -1,7 +1,8 @@
 import '../styles/globals.css';
 import '../styles/tailwind-utils.css';
 import '../styles/tailwind.css';
-import { Auth0Provider } from "@auth0/auth0-react";
+import { Auth0Provider } from '@auth0/auth0-react';
+import Layout from '@/components/organisms/layout';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -11,9 +12,11 @@ function MyApp({ Component, pageProps }) {
       redirectUri={process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URI}
       audience={process.env.NEXT_PUBLIC_AUTH0_AUDIENCE}
     >
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </Auth0Provider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
