@@ -22,6 +22,13 @@
 $ cp api/.env.example api/.env
 ```
 
+下記の変更を行う。
+
+``` bash
+-AUTH0_ISSUER_URL='https://xxxxx.jp.auth0.com/'
++AUTH0_ISSUER_URL='https://nanigacy.jp.auth0.com/'
+```
+
 コンテナを起動します。
 
 ```bash
