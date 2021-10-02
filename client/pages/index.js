@@ -13,7 +13,6 @@ export default function Home() {
     logout 
   } = useAuth0();
 
-  const [userMetadata, setUserMetadata] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
 
   useEffect(() => {
@@ -24,20 +23,19 @@ export default function Home() {
           scope: "read:current_user",
         });
         
-        console.log('✅ accessToken', accessToken);
+        console.log('✅ accessToken:', accessToken);
+        console.log('✅ user: ', user);
   
-        const res = await axios.get('http://localhost:8080/users/private', {
+        const res = await axios.post('http://localhost:8080/users/', {
+          email: user?.email
+        }, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
         
         console.log('✅ res', res);
-        setApiResponse(JSON.stringify(res.data))
-
-        const { user_metadata } = await res.json();
-  
-        setUserMetadata(user_metadata);
+        setApiResponse(JSON.stringify(res.data));
       } catch (e) {
         console.log(e.message);
       }
@@ -72,10 +70,10 @@ export default function Home() {
         },
       });
       console.log('✅ res', res);
-      setApiResponse(JSON.stringify(res.data))
+      setApiResponse(JSON.stringify(res.data));
       } catch (e) {
       console.log(e.message);
-      setApiResponse(JSON.stringify(e.message))
+      setApiResponse(JSON.stringify(e.message));
     }
   }
 
@@ -102,12 +100,6 @@ export default function Home() {
           <img src={user.picture} alt={user.name} />
           <p>name: {user.name}</p>
           <p>email: {user.email}</p>
-          <h3>User Metadata</h3>
-          {userMetadata ? (
-            <pre>{JSON.stringify(userMetadata, null, 2)}</pre>
-          ) : (
-            "No user metadata defined"
-          )}
         </div>
       )
     );
