@@ -1,30 +1,39 @@
 import {
   Controller,
   Get,
-  Post,
   Put,
   Delete,
   Body,
-  Param,
   UseGuards,
   Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User as UserModel } from '@prisma/client';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @Get('public')
+  async test() {
+    return '✅ Public API!'
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('private')
+  async private() {
+    return '✅ Private API!'
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   async getUser(@Request() req: any): Promise<UserModel | null> {
     const userId = req.user.id;
     return this.userService.user({ id: Number(userId) });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Put()
   async updateUser(
     @Request() req: any,
@@ -37,7 +46,7 @@ export class UsersController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Delete()
   async deleteUser(@Request() req: any): Promise<UserModel | null> {
     const userId = req.user.id;
