@@ -2,6 +2,9 @@ import Head from 'next/head';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import CheckForm from '@/components/molecules/check-form';
 
 export default function Home() {
   const {
@@ -14,6 +17,11 @@ export default function Home() {
   } = useAuth0();
 
   const [apiResponse, setApiResponse] = useState(null);
+
+  // const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+  const [stripePromise, setStripePromise] = useState(() =>
+    loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+  );
 
   useEffect(() => {
     const getUserMetadata = async () => {
@@ -125,9 +133,6 @@ export default function Home() {
         <title>Nest.js Prisma Next.js</title>
       </Head>
       <div className="justify-center max-w-4xl mx-auto">
-        <div className="text-4xl font-bold text-center">
-          Nest.js Prisma Next.js
-        </div>
         <div className="p-4 my-4 shadow bg-gray-50">
           <h2 className="my-4 text-2xl">Auth0</h2>
           <LoginButton />
@@ -154,6 +159,12 @@ export default function Home() {
             Private API Call
           </button>
           <pre>{apiResponse}</pre>
+        </div>
+        <div className="p-4 my-4 shadow bg-gray-50">
+          <h2 className="my-4 text-2xl">Stripe</h2>
+          <Elements stripe={stripePromise}>
+            <CheckForm />
+          </Elements>
         </div>
       </div>
     </>
