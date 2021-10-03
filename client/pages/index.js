@@ -74,7 +74,27 @@ export default function Home() {
   };
 
   const deleteUserApi = async () => {
-    console.log('🚨 deleteUserApi');
+    try {
+      const accessToken = await getAccessTokenSilently({
+        audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
+        scope: 'read:current_user',
+      });
+
+      await axios.post(
+        'http://localhost:8080/users/delete',
+        {
+          email: user?.email,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      logout({ returnTo: window.location.origin })
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   // ✅ Stripe

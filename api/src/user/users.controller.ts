@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Put,
-  Delete,
   Body,
   UseGuards,
   Request,
@@ -11,13 +10,17 @@ import {
 import { UserService } from './user.service';
 import { User as UserModel } from '@prisma/client';
 import { AuthGuard } from '@nestjs/passport';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly stripeService: StripeService,
+  ) {}
 
   @Get('public')
-  async test() {
+  async public() {
     return '✅ Public API Test!';
   }
 
@@ -32,22 +35,33 @@ export class UsersController {
   async getUser(
     @Body() postData: { email: string },
   ): Promise<UserModel | null> {
-    console.log('✅ GET /users:', postData);
-    console.log('✅ email:', postData.email);
-
     if (!postData.email) return null;
 
-    const user = await this.userService.user({ email: postData.email });
-    console.log('✅ Create User:', user);
+    // メールアドレスに紐づくUserの取得
+    let user = await this.userService.user({ email: postData.email });
 
-    // 👇 無い場合は作成する
+    // Userが存在しない場合は作成
     if (!user) {
+      // stripeCustomerIdの作成
+      const stripeCustomerId = await this.stripeService.createCustomer(
+        postData.email,
+      );
       const user = await this.userService.createUser({
         email: postData.email,
+        stripeCustomerId: stripeCustomerId,
       });
-      console.log('✅ Get User:', user);
       return user;
     } else {
+      // stripeCustomerIdのが無い場合、作成
+      if (!user.stripeCustomerId) {
+        const stripeCustomerId = await this.stripeService.createCustomer(
+          postData.email,
+        );
+        user = await this.userService.updateUser({
+          where: { id: Number(user.id) },
+          data: { stripeCustomerId: stripeCustomerId },
+        });
+      }
       return user;
     }
   }
@@ -66,9 +80,10 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Delete()
-  async deleteUser(@Request() req: any): Promise<UserModel | null> {
-    const userId = req.user.id;
-    return this.userService.deleteUser({ id: Number(userId) });
+  @Post('delete')
+  async deleteUser(
+    @Body() updateData: { email: string },
+  ): Promise<UserModel | null> {
+    return this.userService.deleteUser({ email: updateData.email });
   }
 }
