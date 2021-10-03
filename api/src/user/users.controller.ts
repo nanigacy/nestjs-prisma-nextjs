@@ -29,13 +29,15 @@ export class UsersController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  async getUser(@Body() postData: { email: string }): Promise<UserModel | null> {
+  async getUser(
+    @Body() postData: { email: string },
+  ): Promise<UserModel | null> {
     console.log('✅ GET /users:', postData);
     console.log('✅ email:', postData.email);
 
     if (!postData.email) return null;
 
-    const user = await this.userService.user({ email: postData.email});
+    const user = await this.userService.user({ email: postData.email });
     console.log('✅ Create User:', user);
 
     // 👇 無い場合は作成する

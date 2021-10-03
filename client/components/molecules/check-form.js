@@ -34,7 +34,8 @@ export default function CheckoutForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <CardElement className="p-4 border rounded-sm"
+      <CardElement
+        className="p-4 border rounded-sm"
         options={{
           iconStyle: 'solid',
           style: {

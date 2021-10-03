@@ -5,7 +5,13 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckForm from '@/components/molecules/check-form';
-import { LockClosedIcon, UserIcon, DatabaseIcon, CreditCardIcon, NewspaperIcon } from "@heroicons/react/outline";
+import {
+  LockClosedIcon,
+  UserIcon,
+  DatabaseIcon,
+  CreditCardIcon,
+  NewspaperIcon,
+} from '@heroicons/react/outline';
 
 export default function Home() {
   const {
@@ -16,7 +22,7 @@ export default function Home() {
     loginWithRedirect,
     logout,
   } = useAuth0();
-  
+
   const [apiResponse, setApiResponse] = useState(null);
   const [auth0User, setAuth0User] = useState(null);
 
@@ -48,7 +54,7 @@ export default function Home() {
         );
 
         setApiResponse(JSON.stringify(res.data));
-        setAuth0User(JSON.stringify(user))
+        setAuth0User(JSON.stringify(user));
       } catch (e) {
         console.log(e.message);
       }
@@ -68,7 +74,30 @@ export default function Home() {
   };
 
   const deleteUserApi = async () => {
-    console.log("🚨 deleteUserApi")
+    console.log('🚨 deleteUserApi');
+  };
+
+  // ✅ Stripe
+  const changePlan = async () => {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
+        scope: 'read:current_user',
+      });
+
+      const res = await axios.post(
+        'http://localhost:8080/stripe/change-plan',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      console.log('✅ res:', res);
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   const privateApi = async () => {
@@ -209,6 +238,14 @@ export default function Home() {
             </div>
             <span className="ml-2 font-bold">Stripe プラン変更</span>
           </h2>
+          <div>
+            <button
+              className="p-2 bg-gray-200 rounded-md hover:bg-gray-300"
+              onClick={changePlan}
+            >
+              プラン変更
+            </button>
+          </div>
         </div>
       </div>
     </>
