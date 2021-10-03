@@ -17,7 +17,6 @@ export default function CheckoutForm() {
       await axios.post(
         'http://localhost:8080/users/attach-payment-method',
         {
-          email: user?.email,
           paymentMethod: paymentMethod,
         },
         {

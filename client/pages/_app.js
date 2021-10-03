@@ -11,6 +11,7 @@ function MyApp({ Component, pageProps }) {
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
       redirectUri={process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URI}
       audience={process.env.NEXT_PUBLIC_AUTH0_AUDIENCE}
+      scope="read:current_user update:current_user_metadata"
     >
       <Layout>
         <Component {...pageProps} />

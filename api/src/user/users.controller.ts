@@ -21,42 +21,38 @@ export class UsersController {
 
   @Get('public')
   async public() {
-    return '✅ Public API Test!';
+    return { message: '✅ Public API Test!' };
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('private')
-  async private() {
-    return '✅ Private API Test!';
+  async private(@Request() req) {
+    return { message: '✅ Private API Test!', payload: req.user };
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  async getUser(
-    @Body() postData: { email: string },
-  ): Promise<UserModel | null> {
-    if (!postData.email) return null;
+  async getUser(@Request() req): Promise<UserModel | null> {
+    const email = req.user['https://example.com/email'];
+    const auth0Sub = req.user.sub; // Auth0のユーザーID
 
     // メールアドレスに紐づくUserの取得
-    let user = await this.userService.user({ email: postData.email });
+    let user = await this.userService.user({ auth0Sub: auth0Sub });
 
     // Userが存在しない場合は作成
     if (!user) {
       // stripeCustomerIdの作成
-      const stripeCustomerId = await this.stripeService.createCustomer(
-        postData.email,
-      );
+      const stripeCustomerId = await this.stripeService.createCustomer(email);
       const user = await this.userService.createUser({
-        email: postData.email,
+        email: req.user['https://example.com/email'],
+        auth0Sub: req.user.sub,
         stripeCustomerId: stripeCustomerId,
       });
       return user;
     } else {
       // stripeCustomerIdのが無い場合、作成
       if (!user.stripeCustomerId) {
-        const stripeCustomerId = await this.stripeService.createCustomer(
-          postData.email,
-        );
+        const stripeCustomerId = await this.stripeService.createCustomer(email);
         user = await this.userService.updateUser({
           where: { id: Number(user.id) },
           data: { stripeCustomerId: stripeCustomerId },
@@ -72,29 +68,28 @@ export class UsersController {
     @Request() req: any,
     @Body() updateData: { email: string },
   ): Promise<UserModel | null> {
-    const userId = req.user.id;
+    const auth0Sub = req.user.sub; // Auth0のユーザーID
     return this.userService.updateUser({
-      where: { id: Number(userId) },
+      where: { auth0Sub: auth0Sub },
       data: updateData,
     });
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('delete')
-  async deleteUser(
-    @Body() updateData: { email: string },
-  ): Promise<UserModel | null> {
-    return this.userService.deleteUser({ email: updateData.email });
+  async deleteUser(@Request() req): Promise<UserModel | null> {
+    const auth0Sub = req.user.sub; // Auth0のユーザーID
+    return this.userService.deleteUser({ auth0Sub: auth0Sub });
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('attach-payment-method')
   async attachPaymentMethod(
-    @Body() postData: { email: string; paymentMethod: any },
+    @Request() req,
+    @Body() postData: { paymentMethod: any },
   ): Promise<any> {
-    if (!postData.email) return null;
-
-    let user = await this.userService.user({ email: postData.email });
+    const email = req.user['https://example.com/email'];
+    let user = await this.userService.user({ email: email });
 
     const stripePaymentMethod = await this.stripeService.attachPaymentMethod(
       postData.paymentMethod.id,

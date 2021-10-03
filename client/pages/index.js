@@ -43,9 +43,7 @@ export default function Home() {
 
         const res = await axios.post(
           'http://localhost:8080/users/',
-          {
-            email: user?.email,
-          },
+          {},
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -82,9 +80,7 @@ export default function Home() {
 
       await axios.post(
         'http://localhost:8080/users/delete',
-        {
-          email: user?.email,
-        },
+        {},
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

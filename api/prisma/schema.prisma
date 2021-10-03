@@ -10,6 +10,7 @@ generator client {
 model User {
   id                   Int       @id @default(autoincrement())
   email                String    @unique
+  auth0Sub             String    @unique
   stripeCustomerId     String?
   stripeCardBrand      String?
   stripeCardLastFour   String?
