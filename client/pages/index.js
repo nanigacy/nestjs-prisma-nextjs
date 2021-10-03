@@ -91,7 +91,7 @@ export default function Home() {
           },
         }
       );
-      logout({ returnTo: window.location.origin })
+      logout({ returnTo: window.location.origin });
     } catch (e) {
       console.log(e.message);
     }

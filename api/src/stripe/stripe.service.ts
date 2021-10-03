@@ -17,4 +17,20 @@ export class StripeService {
     });
     return customer?.id;
   }
+
+  async attachPaymentMethod(
+    paymentMethodId: string,
+    stripeCustomerId: string,
+  ): Promise<any> {
+    console.log('✅ paymentMethodId:', paymentMethodId);
+    console.log('✅ stripeCustomerId:', stripeCustomerId);
+
+    const paymentMethod = await this.stripe.paymentMethods.attach(
+      paymentMethodId,
+      { customer: stripeCustomerId },
+    );
+
+    console.log('✅ paymentMethod:', paymentMethod);
+    return paymentMethod;
+  }
 }

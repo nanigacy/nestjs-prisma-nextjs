@@ -11,4 +11,6 @@ model User {
   id                   Int       @id @default(autoincrement())
   email                String    @unique
   stripeCustomerId     String?
+  stripeCardBrand      String?
+  stripeCardLastFour   String?
 }

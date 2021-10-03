@@ -1,25 +1,45 @@
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
+  const { user, getAccessTokenSilently } = useAuth0();
+
+  const attachPaymentMethod = async (paymentMethod) => {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
+        scope: 'read:current_user',
+      });
+
+      await axios.post(
+        'http://localhost:8080/users/attach-payment-method',
+        {
+          email: user?.email,
+          paymentMethod: paymentMethod,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
   const handleSubmit = async (event) => {
-    // Block native form submission.
     event.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js has not loaded yet. Make sure to disable
-      // form submission until Stripe.js has loaded.
       return;
     }
 
-    // Get a reference to a mounted CardElement. Elements knows how
-    // to find your CardElement because there can only ever be one of
-    // each type of element.
     const cardElement = elements.getElement(CardElement);
 
-    // Use your card Element with other Stripe.js APIs
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: cardElement,
@@ -28,7 +48,8 @@ export default function CheckoutForm() {
     if (error) {
       console.log('[error]', error);
     } else {
-      console.log('[PaymentMethod]', paymentMethod);
+      console.log('✅ PaymentMethod', paymentMethod);
+      await attachPaymentMethod(paymentMethod);
     }
   };
 
@@ -38,6 +59,7 @@ export default function CheckoutForm() {
         className="p-4 border rounded-sm"
         options={{
           iconStyle: 'solid',
+          hidePostalCode: true,
           style: {
             base: {
               iconColor: '#c4f0ff',
@@ -59,7 +81,7 @@ export default function CheckoutForm() {
         type="submit"
         disabled={!stripe}
       >
-        お支払い
+        保存
       </button>
     </form>
   );

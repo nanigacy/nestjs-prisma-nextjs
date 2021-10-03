@@ -86,4 +86,29 @@ export class UsersController {
   ): Promise<UserModel | null> {
     return this.userService.deleteUser({ email: updateData.email });
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('attach-payment-method')
+  async attachPaymentMethod(
+    @Body() postData: { email: string; paymentMethod: any },
+  ): Promise<any> {
+    if (!postData.email) return null;
+
+    let user = await this.userService.user({ email: postData.email });
+
+    const stripePaymentMethod = await this.stripeService.attachPaymentMethod(
+      postData.paymentMethod.id,
+      user.stripeCustomerId,
+    );
+
+    user = await this.userService.updateUser({
+      where: { email: user.email },
+      data: {
+        stripeCardBrand: stripePaymentMethod.card.brand,
+        stripeCardLastFour: stripePaymentMethod.card.last4,
+      },
+    });
+
+    return user;
+  }
 }
