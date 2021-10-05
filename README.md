@@ -1,12 +1,17 @@
 ## NestJS Prisma Next.js 🚅
 
-- [NestJS](https://nestjs.com/)
 - [Next.js](https://nextjs.org/)
+- [NestJS](https://nestjs.com/)
 - [Prisma](https://www.prisma.io/)
 - [Auth0](https://auth0.com/jp)
 - [Stripe](https://stripe.com/jp)
 
 によるSaasプロジェクトテンプレートを構築する
+
+- [Vercel](https://vercel.com/docs/concepts)
+- [Cloud Run](https://cloud.google.com/run)
+- [Cloud SQL](https://cloud.google.com/sql/)
+- [Cloud Storage](https://cloud.google.com/storage)
 
 ## ドキュメント 📃
 

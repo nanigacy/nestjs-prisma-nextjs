@@ -11,6 +11,7 @@ export class StripeService {
     });
   }
 
+  // Customer
   async createCustomer(email: string): Promise<string | null> {
     const customer = await this.stripe.customers.create({
       email: email,
@@ -18,6 +19,7 @@ export class StripeService {
     return customer?.id;
   }
 
+  // PaymentMethod
   async attachPaymentMethod(
     paymentMethodId: string,
     stripeCustomerId: string,
@@ -32,5 +34,61 @@ export class StripeService {
 
     console.log('✅ paymentMethod:', paymentMethod);
     return paymentMethod;
+  }
+
+  // Plan
+  // https://stripe.com/docs/api/plans/retrieve
+  async retrievePlan(priceId: string): Promise<any> {
+    console.log('✅ priceId:', priceId);
+
+    const plan = await this.stripe.plans.retrieve(
+      'price_1JgNMnDRHzepoHcJL2LT2Ryt',
+    );
+
+    console.log('✅ plan:', plan);
+    return plan;
+  }
+
+  // Subscription
+  // https://stripe.com/docs/api/subscriptions/create
+  async createSubscription(
+    priceId: string,
+    stripeCustomerId: string,
+  ): Promise<any> {
+    const subscription = await this.stripe.subscriptions.create({
+      customer: stripeCustomerId,
+      items: [{ price: priceId }],
+    });
+    console.log('✅ subscription:', subscription);
+    return subscription;
+  }
+
+  // https://stripe.com/docs/api/subscriptions/update
+  async updateSubscription(
+    orderId: string,
+    stripeCustomerId: string,
+  ): Promise<any> {
+    const subscription = await this.stripe.subscriptions.update(
+      stripeCustomerId,
+      { metadata: { order_id: orderId } },
+    );
+    console.log('✅ subscription:', subscription);
+    return subscription;
+  }
+
+  // https://stripe.com/docs/api/subscriptions/cancel
+  async cancelSubscription(subscriptionId: string): Promise<any> {
+    const deleted = await this.stripe.subscriptions.del(subscriptionId);
+    console.log('✅ deleted:', deleted);
+    return deleted;
+  }
+
+  // https://stripe.com/docs/api/subscriptions/retrieve
+  async retrieveSubscription(subscriptionId: string): Promise<any> {
+    const subscription = await this.stripe.subscriptions.retrieve(
+      subscriptionId,
+    );
+    console.log('✅ subscription:', subscription);
+    return subscription;
   }
 }
