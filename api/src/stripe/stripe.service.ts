@@ -19,6 +19,19 @@ export class StripeService {
     return customer?.id;
   }
 
+  async updateCustomer(
+    paymentMethodId: string,
+    stripeCustomerId: string,
+  ): Promise<any> {
+    // デフォルトの決済方法を更新する
+    const customer = await this.stripe.customers.update(stripeCustomerId, {
+      invoice_settings: {
+        default_payment_method: paymentMethodId,
+      },
+    });
+    return customer;
+  }
+
   // PaymentMethod
   async attachPaymentMethod(
     paymentMethodId: string,

@@ -94,7 +94,7 @@ export default function Home() {
   };
 
   // ✅ Stripe
-  const changePlan = async () => {
+  const changePlan = async (priceId) => {
     try {
       const accessToken = await getAccessTokenSilently({
         audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
@@ -102,8 +102,10 @@ export default function Home() {
       });
 
       const res = await axios.post(
-        'http://localhost:8080/stripe/change-plan',
-        {},
+        'http://localhost:8080/users/change-plan',
+        {
+          priceId: priceId
+        },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -257,9 +259,21 @@ export default function Home() {
           <div>
             <button
               className="p-2 bg-gray-200 rounded-md hover:bg-gray-300"
-              onClick={changePlan}
+              onClick={() => changePlan('Free')}
             >
-              プラン変更
+              フリープラン
+            </button>
+            <button
+              className="p-2 ml-2 bg-gray-200 rounded-md hover:bg-gray-300"
+              onClick={() => changePlan(process.env.NEXT_PUBLIC_STRIPE_STANDARD_PLAN_ID)}
+            >
+              スタンダードプラン
+            </button>
+            <button
+              className="p-2 ml-2 bg-gray-200 rounded-md hover:bg-gray-300"
+              onClick={() => changePlan(process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PLAN_ID)}
+            >
+              プレミアムプラン
             </button>
           </div>
         </div>

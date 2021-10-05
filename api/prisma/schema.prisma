@@ -14,4 +14,5 @@ model User {
   stripeCustomerId     String?
   stripeCardBrand      String?
   stripeCardLastFour   String?
+  stripeSubscriptionId String?
 }
