@@ -136,9 +136,8 @@ export class UsersController {
     // subscriptionIDを保存する
     console.log('✅ subscription:', subscription);
 
-    // TODO: subscriptionIdがある場合は、更新する
+    // TODO: subscriptionIdの保存
     // const subscription = await this.stripeService.createSubscription(postData.priceId, user.stripeCustomerId)
-
     return 'success';
   }
 

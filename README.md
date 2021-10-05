@@ -1,29 +1,31 @@
-## NestJS Prisma Next.js 🚅
+# 💎 NestJS Prisma NextJS
+
+Saas Template
+
+## ⚡️ Tech Stack
+
+### Open Source
 
 - [Next.js](https://nextjs.org/)
-- [NestJS](https://nestjs.com/)
+- [Nest.js](https://nestjs.com/)
+- [PostgreSQL](https://www.postgresql.org/)
 - [Prisma](https://www.prisma.io/)
-- [Auth0](https://auth0.com/jp)
-- [Stripe](https://stripe.com/jp)
 
-によるSaasプロジェクトテンプレートを構築する
+### Infra Services
 
-- [Vercel](https://vercel.com/docs/concepts)
-- [Cloud Run](https://cloud.google.com/run)
+- [Auth0](https://auth0.com/jp/)
+- [Stripe](https://stripe.com/jp/)
+- [SendGrid](https://sendgrid.com/)
+- [Vercel](https://vercel.com/docs/concepts/)
+- [Cloud Run](https://cloud.google.com/run/)
 - [Cloud SQL](https://cloud.google.com/sql/)
-- [Cloud Storage](https://cloud.google.com/storage)
+- [Cloud Storage](https://cloud.google.com/storage/)
 
-## ドキュメント 📃
-
-- [NestJS Database & Prisma | Type-safe ORM for SQL Databases](https://www.prisma.io/nestjs)
-- [Prisma | NestJS - A progressive Node.js framework](https://docs.nestjs.com/recipes/prisma#prisma)
-- [Getting Started \| Next\.js](https://nextjs.org/docs/getting-started)
-
-## 確認バージョン
+## 👀 確認バージョン
 
 - Node.js: 14.x +
 
-## 開発環境セットアップ 💡
+## 💡 開発環境セットアップ
 
 ### API と DB の起動
 
@@ -61,13 +63,13 @@ $ yarn dev  # http://localhost:3000 で起動されます
 
 |URL|解説|
 |---|---|
-|http://localhost:8080|API URL|
-|http://localhost:3000|フロントアプリ URL|
-|postgresql://postgres:password@db:5432/nestjs-prisma-nextjs|PostgreSQL URL|
+|http://localhost:8080|api server|
+|http://localhost:3000|client appication|
+|postgresql://postgres:password@db:5432/nestjs-prisma-nextjs|postgresql server|
 
 > 💡 PostgreSQLのDBクライアントは、 [TablePlus](https://tableplus.com/) を使っています。
 
-## デプロイ ⛴
+## ⛵️ デプロイ
 
 GCP Cloud Run にデプロイされます。
 
@@ -75,7 +77,7 @@ GCP Cloud Run にデプロイされます。
 
 github -> cloud build -> cloud run
 
-## APIリファレンス ⚡️
+## ⚡️ APIリファレンス
 
 APIの確認は、 [curl](https://curl.se/docs/manpage.html) もしくは、 [Postman API Platform](https://www.postman.com/) をオススメします。
 複雑な API は、 Postman が良いです。
