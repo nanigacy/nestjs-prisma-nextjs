@@ -26,7 +26,6 @@ export default function Home() {
   const [apiResponse, setApiResponse] = useState(null);
   const [auth0User, setAuth0User] = useState(null);
 
-  // const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
   const [stripePromise, setStripePromise] = useState(() =>
     loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
   );
@@ -104,7 +103,7 @@ export default function Home() {
       const res = await axios.post(
         'http://localhost:8080/users/change-plan',
         {
-          priceId: priceId
+          priceId: priceId,
         },
         {
           headers: {
@@ -128,6 +127,27 @@ export default function Home() {
       console.log('✅ accessToken', accessToken);
 
       const res = await axios.get('http://localhost:8080/users/private', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setApiResponse(JSON.stringify(res.data));
+    } catch (e) {
+      console.log(e.message);
+      setApiResponse(JSON.stringify(e.message));
+    }
+  };
+
+  const cancelPlan = async () => {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
+        scope: 'read:current_user',
+      });
+
+      console.log('✅ accessToken', accessToken);
+
+      const res = await axios.get('http://localhost:8080/users/cancel-plan', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -174,7 +194,7 @@ export default function Home() {
             <p>お名前: {user.name}</p>
             <p>メールアドレス: {user.email}</p>
             <p>カード情報: </p>
-            <p>プラン: </p>
+            <p>現在のプラン: </p>
           </div>
         </div>
       )
@@ -265,15 +285,25 @@ export default function Home() {
             </button>
             <button
               className="p-2 ml-2 bg-gray-200 rounded-md hover:bg-gray-300"
-              onClick={() => changePlan(process.env.NEXT_PUBLIC_STRIPE_STANDARD_PLAN_ID)}
+              onClick={() =>
+                changePlan(process.env.NEXT_PUBLIC_STRIPE_STANDARD_PLAN_ID)
+              }
             >
               スタンダードプラン
             </button>
             <button
               className="p-2 ml-2 bg-gray-200 rounded-md hover:bg-gray-300"
-              onClick={() => changePlan(process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PLAN_ID)}
+              onClick={() =>
+                changePlan(process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PLAN_ID)
+              }
             >
               プレミアムプラン
+            </button>
+            <button
+              className="p-2 ml-2 bg-gray-200 rounded-md hover:bg-gray-300"
+              onClick={() => cancelPlan()}
+            >
+              プランのキャンセル
             </button>
           </div>
         </div>

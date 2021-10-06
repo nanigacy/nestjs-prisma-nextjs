@@ -78,15 +78,15 @@ export class StripeService {
 
   // https://stripe.com/docs/api/subscriptions/update
   async updateSubscription(
-    orderId: string,
-    stripeCustomerId: string,
+    stripeSubscriptionId: string,
+    params: any,
   ): Promise<any> {
     const subscription = await this.stripe.subscriptions.update(
-      stripeCustomerId,
-      { metadata: { order_id: orderId } },
+      stripeSubscriptionId,
+      params,
     );
     console.log('✅ subscription:', subscription);
-    return subscription;
+    return 'success';
   }
 
   // https://stripe.com/docs/api/subscriptions/cancel

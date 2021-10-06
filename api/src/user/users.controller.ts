@@ -94,15 +94,11 @@ export class UsersController {
       user.stripeCustomerId,
     );
 
-    console.log('✅ stripePaymentMethod:', stripePaymentMethod);
-
     // デフォルトの決済方法を更新する
     const customer = await this.stripeService.updateCustomer(
       stripePaymentMethod.id,
       user.stripeCustomerId,
     );
-
-    console.log('✅ customer:', customer);
 
     user = await this.userService.updateUser({
       where: { email: user.email },
@@ -125,29 +121,61 @@ export class UsersController {
     const plan = await this.stripeService.retrievePlan(postData.priceId);
     if (!plan) return;
 
-    const user = await this.userService.user({ auth0Sub: auth0Sub });
+    let user = await this.userService.user({ auth0Sub: auth0Sub });
+    let subscription;
+    if (user.stripeSubscriptionId) {
+      subscription = await this.stripeService.retrieveSubscription(
+        user.stripeSubscriptionId,
+      );
+      console.log('✅ postData.priceId: ', postData.priceId);
+      console.log('✅ subscription.plan.id: ', subscription.plan.id);
 
-    // TODO: subscriptionが無い場合は、作成する
-    // TODO: エラーハンドリング デフォルトの決済方法がない場合
-    const subscription = await this.stripeService.createSubscription(
-      postData.priceId,
-      user.stripeCustomerId,
-    );
+      if (postData.priceId != subscription.plan.id) {
+        const params = {
+          items: [
+            {
+              id: subscription.items.data[0].id,
+              plan: postData.priceId,
+            },
+          ],
+        };
+        subscription = await this.stripeService.updateSubscription(
+          user.stripeSubscriptionId,
+          params,
+        );
+      } else {
+        return '同じプランです';
+      }
+    } else {
+      // TODO: エラーハンドリング デフォルトの決済方法がない場合
+      subscription = await this.stripeService.createSubscription(
+        postData.priceId,
+        user.stripeCustomerId,
+      );
+    }
+
     // subscriptionIDを保存する
-    console.log('✅ subscription:', subscription);
+    user = await this.userService.updateUser({
+      where: { auth0Sub: auth0Sub },
+      data: {
+        stripeSubscriptionId: subscription.id,
+      },
+    });
 
-    // TODO: subscriptionIdの保存
-    // const subscription = await this.stripeService.createSubscription(postData.priceId, user.stripeCustomerId)
-    return 'success';
+    return user;
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('cancel-plan')
   async cancelPlan(@Request() req): Promise<any> {
     const auth0Sub = req.user.sub;
-
     const user = await this.userService.user({ auth0Sub: auth0Sub });
+    const subscription = await this.stripeService.cancelSubscription(
+      user.stripeCustomerId,
+    );
+    console.log('✅ subscription:', subscription);
 
+    // TODO: subscriptionIdの削除
     return 'success';
   }
 }
