@@ -127,8 +127,6 @@ export class UsersController {
       subscription = await this.stripeService.retrieveSubscription(
         user.stripeSubscriptionId,
       );
-      console.log('✅ postData.priceId: ', postData.priceId);
-      console.log('✅ subscription.plan.id: ', subscription.plan.id);
 
       if (postData.priceId != subscription.plan.id) {
         const params = {
@@ -166,16 +164,21 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('cancel-plan')
+  @Get('cancel-plan')
   async cancelPlan(@Request() req): Promise<any> {
     const auth0Sub = req.user.sub;
-    const user = await this.userService.user({ auth0Sub: auth0Sub });
+    let user = await this.userService.user({ auth0Sub: auth0Sub });
     const subscription = await this.stripeService.cancelSubscription(
-      user.stripeCustomerId,
+      user.stripeSubscriptionId,
     );
-    console.log('✅ subscription:', subscription);
 
-    // TODO: subscriptionIdの削除
+    // subscriptionIDを削除する
+    user = await this.userService.updateUser({
+      where: { auth0Sub: auth0Sub },
+      data: {
+        stripeSubscriptionId: '',
+      },
+    });
     return 'success';
   }
 }

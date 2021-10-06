@@ -37,28 +37,17 @@ export class StripeService {
     paymentMethodId: string,
     stripeCustomerId: string,
   ): Promise<any> {
-    console.log('✅ paymentMethodId:', paymentMethodId);
-    console.log('✅ stripeCustomerId:', stripeCustomerId);
-
     const paymentMethod = await this.stripe.paymentMethods.attach(
       paymentMethodId,
       { customer: stripeCustomerId },
     );
-
-    console.log('✅ paymentMethod:', paymentMethod);
     return paymentMethod;
   }
 
   // Plan
   // https://stripe.com/docs/api/plans/retrieve
   async retrievePlan(priceId: string): Promise<any> {
-    console.log('✅ priceId:', priceId);
-
-    const plan = await this.stripe.plans.retrieve(
-      'price_1JgNMnDRHzepoHcJL2LT2Ryt',
-    );
-
-    console.log('✅ plan:', plan);
+    const plan = await this.stripe.plans.retrieve(priceId);
     return plan;
   }
 
@@ -72,7 +61,6 @@ export class StripeService {
       customer: stripeCustomerId,
       items: [{ price: priceId }],
     });
-    console.log('✅ subscription:', subscription);
     return subscription;
   }
 
@@ -85,14 +73,12 @@ export class StripeService {
       stripeSubscriptionId,
       params,
     );
-    console.log('✅ subscription:', subscription);
     return 'success';
   }
 
   // https://stripe.com/docs/api/subscriptions/cancel
   async cancelSubscription(subscriptionId: string): Promise<any> {
     const deleted = await this.stripe.subscriptions.del(subscriptionId);
-    console.log('✅ deleted:', deleted);
     return deleted;
   }
 
@@ -101,7 +87,8 @@ export class StripeService {
     const subscription = await this.stripe.subscriptions.retrieve(
       subscriptionId,
     );
-    console.log('✅ subscription:', subscription);
     return subscription;
   }
+
+  // TODO: invoiceで請求書を発行する際に、TAXを含める
 }

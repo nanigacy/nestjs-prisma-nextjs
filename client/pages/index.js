@@ -145,8 +145,6 @@ export default function Home() {
         scope: 'read:current_user',
       });
 
-      console.log('✅ accessToken', accessToken);
-
       const res = await axios.get('http://localhost:8080/users/cancel-plan', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
