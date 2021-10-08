@@ -7,7 +7,6 @@ on:
 name: Build and Deploy a Container
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
   SERVICE: nestjs-prisma-nextjs
   REGION: asia-northeast1
   IMAGE: gcr.io/${{ secrets.GCP_PROJECT }}/nestjs-prisma-nextjs:${{ github.sha }}
@@ -31,7 +30,9 @@ jobs:
 
       - name: Build and Push Container
         run: |-
-          docker build -t ${{ env.IMAGE }} api/ -f api/Dockerfile.production
+          docker build -t ${{ env.IMAGE }} api/ -f api/Dockerfile.production \
+            --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            --build-arg SHADOW_DATABASE_URL=${{ secrets.SHADOW_DATABASE_URL }}
           docker push ${{ env.IMAGE }}
 
       - name: Deploy to Cloud Run
@@ -40,9 +41,7 @@ jobs:
             --region ${{ env.REGION }} \
             --image ${{ env.IMAGE }} \
             --platform managed \
-            --allow-unauthenticated \
-            --update-env-vars "DATABASE_URL"="postgres://rffftuxjnpiogn:95bb35c65fd31bf821291450cb230f204cc7e67178cf449bfd07552a0a71d9b6@ec2-3-209-65-193.compute-1.amazonaws.com:5432/dagpf497bg9352"
-            # --command "yarn && npx prisma generate && npx prisma migrate dev && yarn start:dev"
+            --allow-unauthenticated
 
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }}
