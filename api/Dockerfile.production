@@ -1,0 +1,13 @@
+FROM node:14
+
+ENV DATABASE_URL=postgres://rffftuxjnpiogn:95bb35c65fd31bf821291450cb230f204cc7e67178cf449bfd07552a0a71d9b6@ec2-3-209-65-193.compute-1.amazonaws.com:5432/dagpf497bg9352
+ENV SHADOW_DATABASE_URL=postgres://lqgiedpvsjpibx:750c9d488d49e12388bd9ba0f26eef14d01eb91dd26acb429da62affc9279f9c@ec2-3-209-65-193.compute-1.amazonaws.com:5432/ddtq5rvmlsp0j5
+
+WORKDIR /usr/src/app
+COPY . .
+
+RUN yarn
+RUN npx prisma generate
+RUN npx prisma migrate dev
+
+CMD [ "yarn", "start:dev" ]
