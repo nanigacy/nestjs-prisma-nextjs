@@ -3,9 +3,10 @@ FROM node:14
 WORKDIR /usr/src/app
 COPY . .
 
-RUN echo $DATABASE_URL
-RUN echo $SHADOW_DATABASE_URL
-RUN export
+ARG database_url
+ARG shadow_database_url
+ENV DATABASE_URL=$database_url
+ENV SHADOW_DATABASE_URL=$shadow_database_url
 
 RUN yarn
 RUN npx prisma generate
