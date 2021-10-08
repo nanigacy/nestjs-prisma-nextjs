@@ -16,11 +16,8 @@ services:
 
   api:
     build:
-      context: .
-      dockerfile: ./api/Dockerfile
-    environment:
-      - NODE_ENV=development
-      - PORT=8080
+      context: api/
+      dockerfile: Dockerfile.local
     volumes:
       - ./api/:/usr/src/app
     ports:
