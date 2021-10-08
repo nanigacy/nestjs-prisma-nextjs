@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - deploy/prod
+      - main
 
 name: Build and Deploy a Container
 env:
