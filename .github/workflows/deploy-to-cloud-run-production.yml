@@ -7,9 +7,9 @@ name: Build and Deploy a Container
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
   GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-  SERVICE: rnestjs-prisma-nextjs
+  SERVICE: nestjs-prisma-nextjs
   REGION: asia-northeast1
-  IMAGE: gcr.io/${{ secrets.GCP_PROJECT }}/rnestjs-prisma-nextjs:${{ github.sha }}
+  IMAGE: gcr.io/${{ secrets.GCP_PROJECT }}/nestjs-prisma-nextjs:${{ github.sha }}
 
 jobs:
   deploy:
