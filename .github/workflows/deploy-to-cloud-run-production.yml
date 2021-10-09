@@ -32,7 +32,12 @@ jobs:
         run: |-
           docker build -t ${{ env.IMAGE }} api/ -f api/Dockerfile.production \
             --build-arg database_url=${{ secrets.DATABASE_URL }} \
-            --build-arg shadow_database_url=${{ secrets.SHADOW_DATABASE_URL }}
+            --build-arg shadow_database_url=${{ secrets.SHADOW_DATABASE_URL }} \
+            --build-arg auth0_domain=${{ secrets.AUTH0_DOMAIN }}\
+            --build-arg auth0_audience=${{ secrets.AUTH0_AUDIENCE }} \
+            --build-arg auth0_issuer_url=${{ secrets.AUTH0_ISSUER_URL }} \
+            --build-arg auth0_client_id=${{ secrets.AUTH0_CLIENT_ID }} \
+            --build-arg stripe_secret_key=${{ secrets.STRIPE_SECRET_KEY }}
           docker push ${{ env.IMAGE }}
 
       - name: Deploy to Cloud Run
