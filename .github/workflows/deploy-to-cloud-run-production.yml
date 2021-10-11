@@ -37,6 +37,7 @@ jobs:
             --build-arg auth0_audience=${{ secrets.AUTH0_AUDIENCE }} \
             --build-arg auth0_issuer_url=${{ secrets.AUTH0_ISSUER_URL }} \
             --build-arg auth0_client_id=${{ secrets.AUTH0_CLIENT_ID }} \
+            --build-arg auth0_client_secret=${{ secrets.AUTH0_CLIENT_SECRET }} \
             --build-arg stripe_secret_key=${{ secrets.STRIPE_SECRET_KEY }}
           docker push ${{ env.IMAGE }}
 

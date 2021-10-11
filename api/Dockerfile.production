@@ -15,6 +15,8 @@ ARG auth0_issuer_url
 ENV AUTH0_ISSUER_URL=$auth0_issuer_url
 ARG auth0_client_id
 ENV AUTH0_CLIENT_ID=$auth0_client_id
+ARG auth0_client_secret
+ENV AUTH0_CLIENT_SECRET=$auth0_client_secret
 ARG stripe_secret_key
 ENV STRIPE_SECRET_KEY=$stripe_secret_key
 
